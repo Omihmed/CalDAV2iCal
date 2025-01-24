@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CalDAV Sync</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>CalDAV Sync Status</h1>
+        {% for server in servers %}
+        <table class="server-status">
+            <tr>
+                <th colspan="2">Server Info</th>
+            </tr>
+            <tr>
+                <td>Address</td>
+                <td>{{ server.CALDAV_URL }}</td>
+            </tr>
+            <tr>
+                <td>Login</td>
+                <td>{{ server.USERNAME }}</td>
+            </tr>
+            <tr>
+                <td>Sync Interval (min)</td>
+                <td>{{ server.CHECK_INTERVAL }}</td>
+            </tr>
+            <tr>
+                <td>Last Sync</td>
+                <td>{{ server.last_sync or 'Never' }}</td>
+            </tr>
+            <tr>
+                <td>ICS File</td>
+                <td>
+                    <a href="/download/calendar.ics"><button class="copy-link">Download</button></a>
+                    <button class="copy-link" onclick="copyLinkToClipboard()">Copy link</button>
+                </td>
+            </tr>
+            <tr>
+                <td>Status</td>
+                <td class="{{ server.status }}">{{ server.status }}</td>
+            </tr>
+            <tr>
+                <td>Actions</td>
+                <td>
+                    <a href="/syncnow/{{ loop.index0 }}"><button class="copy-link">Sync Now</button></a>
+                    <a href="/settings/{{ loop.index0 }}"><button class="back">Edit</button></a>
+                </td>
+            </tr>
+        </table>
+        {% endfor %}
+        <h2>Connection Log</h2>
+        <ul>
+            {% for entry in log_entries %}
+            <li>{{ entry }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <script>
+        function copyLinkToClipboard() {
+            // Текст, который нужно скопировать
+            const link = '/download/calendar.ics';
+            const fullLink = window.location.origin + link;
+
+            // Создаем временный элемент textarea
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = fullLink;
+            document.body.appendChild(tempTextArea);
+
+            // Выделяем текст внутри textarea
+            tempTextArea.select();
+            tempTextArea.setSelectionRange(0, 99999); // Для мобильных устройств
+
+            // Используем execCommand для копирования текста в буфер обмена
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    alert('Link copied to clipboard!');
+                } else {
+                    alert('Failed to copy the link.');
+                }
+            } catch (err) {
+                console.error('Failed to copy text: ', err);
+            }
+
+            // Удаляем временный элемент
+            document.body.removeChild(tempTextArea);
+        }
+    </script>
+</body>
+</html>

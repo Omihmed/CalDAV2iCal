@@ -1,0 +1,4 @@
+Flask==2.0.1
+caldav==0.8.0
+werkzeug==2.0.3  # Фиксируем версию werkzeug
+icalendar==4.0.7  # Добавляем библиотеку icalendar

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Server Settings</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Edit Server Settings</h1>
+        <form method="post">
+            <input type="text" name="CALDAV_URL" placeholder="Server Address" value="{{ server.CALDAV_URL }}" required>
+            <input type="text" name="USERNAME" placeholder="Username" value="{{ server.USERNAME }}" required>
+            <input type="password" name="PASSWORD" placeholder="Password" value="{{ server.PASSWORD }}" required>
+            <input type="number" name="CHECK_INTERVAL" placeholder="Check Interval (minutes)" value="{{ server.CHECK_INTERVAL }}" required>
+            <button type="submit" class="save">Save</button>
+            <a href="/"><button type="button" class="back">Back to status page</button></a>
+        </form>
+    </div>
+</body>
+</html>
